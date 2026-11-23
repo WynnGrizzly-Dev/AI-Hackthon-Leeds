@@ -56,6 +56,11 @@ def find_onnx_model() -> str:
         if candidate.is_file():
             return str(candidate)
 
+    # The location documented in README.md.
+    documented = HERE.resolve().parent / "models" / "branchA_v1.onnx"
+    if documented.is_file():
+        return str(documented)
+
     # Preserve a useful path in the settings input even when the file is absent.
     # The existing model-loading error will warn the user.
     return str(HERE.resolve().parent.parent / MODEL_RELATIVE_PATH)
