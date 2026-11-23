@@ -1,0 +1,3 @@
+# 0.10.21 still includes mp.solutions (and installs OpenCV). Needs Python 3.9-3.12.
+mediapipe==0.10.21
+flask
