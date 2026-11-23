@@ -86,6 +86,7 @@ html, body, [class*="st-"], .stMarkdown, p, li { font-family: 'Inter', system-ui
   font-feature-settings: "liga" !important;
 }
 .stApp { background: var(--cream); color: var(--text); }
+[data-testid="stHeader"] { background: var(--cream); color: var(--text); }
 [data-testid="stSidebar"] { background: var(--cream-dark); border-right: 2px solid var(--crimson); }
 h1 { font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
 h2, h3 { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
