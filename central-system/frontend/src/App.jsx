@@ -98,7 +98,7 @@ function AppRoutes() {
     }
     setUser(serverUser || { name: email || 'Demo member', email, role: selectedRole || 'ophthalmologist' });
     setAuthChecked(true);
-    navigate('/scanner', { replace: true });
+    navigate('/eye-guard', { state: { autoStart: true } });
   };
 
   const handleLogout = async () => {
@@ -118,10 +118,10 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={user ? <Navigate to="/scanner" replace /> : <EyeJourneyLogin skipAuth={true} onLogin={handleLogin} />} />
+      <Route path="/" element={<EyeJourneyLogin skipAuth={true} onLogin={handleLogin} />} />
       <Route path="/scanner" element={user ? <ScannerPage user={user} onLogout={handleLogout} /> : <Navigate to="/" replace />} />
-      <Route path="/eye-guard" element={<EyeGuardPage />} />
-      <Route path="*" element={<Navigate to={user ? '/scanner' : '/'} replace />} />
+      <Route path="/eye-guard" element={user ? <EyeGuardPage /> : <Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

@@ -737,7 +737,7 @@ export const EyeJourneyLogin = ({ onLogin, skipAuth = false }) => {
                     AI-ASSISTED RETINAL SCREENING
                   </div>
                   <div className="enter__role-desc">
-                    Continue to the retinal screening application.
+                    Starts Eye Guard and asks to use your camera. The retinal scanner is one click further.
                     No account required for this hackathon demo.
                   </div>
                   <div className="enter__role-arrow">→</div>

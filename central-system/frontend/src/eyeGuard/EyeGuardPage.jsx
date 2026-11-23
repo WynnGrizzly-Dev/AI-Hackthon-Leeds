@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LEFT, RIGHT, createMonitor, ear, eyeRedness } from './monitor';
 
 // Face model files are copied from node_modules into public/face_mesh (see package.json).
@@ -28,6 +28,7 @@ const IDLE = { work: 0, face: false, calibrating: false, blinksPerMin: null, war
 const two = (n) => String(Math.floor(n)).padStart(2, '0');
 
 export function EyeGuardPage() {
+  const location = useLocation();
   const video = useRef(null);
   const session = useRef(null);
   const [phase, setPhase] = useState('off'); // off | starting | on
@@ -47,7 +48,6 @@ export function EyeGuardPage() {
     if (video.current) video.current.srcObject = null;
     setPhase('off');
   }, []);
-  useEffect(() => stop, [stop]);
 
   const start = async () => {
     const cur = { dead: false };
@@ -112,6 +112,14 @@ export function EyeGuardPage() {
     }
   };
 
+  // Arriving from the introduction starts the camera; the browser still asks permission.
+  const autoStart = useRef(location.state?.autoStart);
+  useEffect(() => {
+    if (autoStart.current) start();
+    return stop;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stop]);
+
   const on = phase === 'on';
   const status = phase === 'starting' ? 'Starting…' : !on ? 'Camera is off'
     : !s.face ? 'No face seen' : s.calibrating ? 'Calibrating: look at the camera' : 'Watching your eyes';
@@ -120,7 +128,10 @@ export function EyeGuardPage() {
     <main style={{ minHeight: '100vh', boxSizing: 'border-box', background: '#18100e', color: '#f8ede6', fontFamily: 'Inter, Arial, sans-serif', padding: '20px clamp(16px, 4vw, 64px)' }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
         <strong style={{ letterSpacing: '0.12em' }}>RETINA<span style={{ color: '#e45b45' }}>TRANSFORM</span></strong>
-        <Link to="/" style={{ color: '#eb8c73' }}>Back to main site</Link>
+        <nav style={{ display: 'flex', gap: 20 }}>
+          <Link to="/" style={{ color: '#eb8c73' }}>Introduction</Link>
+          <Link to="/scanner" style={{ color: '#eb8c73' }}>Retinal scanner</Link>
+        </nav>
       </header>
       <section style={{ maxWidth: 520, margin: '32px auto', textAlign: 'center' }}>
         <h1 style={{ margin: '0 0 8px' }}>Eye Guard</h1>
