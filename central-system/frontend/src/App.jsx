@@ -1,6 +1,7 @@
 import React, { Component, useCallback, useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { EyeJourneyLogin } from './components/screens/EyeJourneyLogin';
+import { EyeGuardPage } from './eyeGuard/EyeGuardPage';
 import { centralApi, UNAUTHENTICATED_EVENT } from './api/centralApiClient';
 import { USE_MOCK_DATA } from './config';
 
@@ -20,6 +21,7 @@ function ScannerPage({ user, onLogout }) {
         <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.4rem)', lineHeight: 1.2, margin: '0 0 10px' }}>Welcome{user?.name ? `, ${user.name}` : ''}.</h1>
         <p style={{ color: '#c7aea5', margin: '0 0 10px' }}>Your retinal screening assistant is below. Use public or synthetic test images only.</p>
         <p style={{ margin: '0 0 16px', fontSize: '0.9rem' }}>
+          <Link to="/eye-guard" style={{ color: "#eb8c73", marginRight: 20 }}>Open Eye Guard</Link>
           <a href={SCANNER_URL} target="_blank" rel="noopener noreferrer" style={{ color: '#eb8c73' }}>Open scanner in a separate tab</a>
           <span style={{ color: '#c7aea5' }}> if the embedded view doesn't load.</span>
         </p>
@@ -118,6 +120,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={user ? <Navigate to="/scanner" replace /> : <EyeJourneyLogin skipAuth={true} onLogin={handleLogin} />} />
       <Route path="/scanner" element={user ? <ScannerPage user={user} onLogout={handleLogout} /> : <Navigate to="/" replace />} />
+      <Route path="/eye-guard" element={<EyeGuardPage />} />
       <Route path="*" element={<Navigate to={user ? '/scanner' : '/'} replace />} />
     </Routes>
   );
